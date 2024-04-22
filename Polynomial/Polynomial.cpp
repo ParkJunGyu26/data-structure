@@ -5,6 +5,7 @@ int i, j;
 // 생성자
 Polynomial::Polynomial(): degree(0), coef {0} {
 	// degree = 0;
+	// coef[MAX_ARRAY-1] = {0};
 }
 
 // 소멸자
