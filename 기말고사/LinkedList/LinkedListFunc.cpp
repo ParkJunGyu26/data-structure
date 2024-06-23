@@ -1,7 +1,7 @@
 #include "LinkedList.h"
 
 // 생성자
-LinkedList::LinkedList() {}
+LinkedList::LinkedList() : head(0) {}
 
 // 소멸자
 // 링크드 리스트의 값들의 주소값 반환
@@ -267,27 +267,38 @@ void LinkedList::reverse()
 // 두 리스트 합치기
 // 현재 리스트의 마지막 노드를
 // 매개변수 리스트의 헤드와 연결
-void LinkedList::merge(LinkedList* that) 
+// void LinkedList::merge(LinkedList* that) 
+// {
+// 	// 해당 객체의 리스트가 비어있다면
+// 	if (isEmpty())
+// 	{
+// 		// 해당 리스트의 헤드를 매개인자의 포인터 값으로 할당
+// 		head.setNext(that->getHead());
+// 	} else 
+// 	{
+// 		Node* current = getHead();
+
+// 		// 해당 객체의 리스트의 마지막 값을 찾기 위해 반복문
+// 		while(current->getNext() != nullptr)
+// 		{
+// 			current->getNext();
+// 		}
+
+// 		// current는 마지막 노드임을 알 수 있다.
+// 		// nullptr을 가리키고 있기 때문이다.
+// 		// 따라서, 해당 객체의 리스트의 마지막 값과
+// 		// 매개인자의 리스트 주소 값의 헤드와 연결해준다.
+// 		current->setNext(that->getHead());
+// 	}
+// }
+
+void LinkedList::merge(LinkedList* that)
 {
-	// 해당 객체의 리스트가 비어있다면
-	if (isEmpty())
-	{
-		// 해당 리스트의 헤드를 매개인자의 포인터 값으로 할당
-		head.setNext(that->getHead());
-	} else 
-	{
-		Node* current = getHead();
+	Node* thisTail = &head;
 
-		// 해당 객체의 리스트의 마지막 값을 찾기 위해 반복문
-		while(current->getNext() != nullptr)
-		{
-			current->getNext();
-		}
-
-		// current는 마지막 노드임을 알 수 있다.
-		// nullptr을 가리키고 있기 때문이다.
-		// 따라서, 해당 객체의 리스트의 마지막 값과
-		// 매개인자의 리스트 주소 값의 헤드와 연결해준다.
-		current->setNext(that->getHead());
-	}
+	while (thisTail -> getNext() != nullptr)
+		thisTail = thisTail->getNext();
+	
+	thisTail -> setNext(that->getHead());
+	that->head.setNext(nullptr);
 }

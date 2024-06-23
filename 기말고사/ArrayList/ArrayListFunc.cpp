@@ -63,7 +63,8 @@ int ArrayList::getEntry(int pos)
 	if (isEmpty() || pos < 0 || pos >= size())
 	{
 		cout << "ERROR!" << endl;
-		return -1; // exit(1);
+		// return -1; 
+		exit(1);
 	}
 
 	return data[pos];
