@@ -30,13 +30,19 @@ void LinkedQueue::enqueue(int data)
 	// 새로운 노드 값을 동적 할당
 	Node* newNode = new Node(data);
 
+	if(isEmpty()) front = rear = newNode;
+	else {
+		rear -> setNext(newNode);
+		rear = newNode;
+	}
+
 	// 현재 맨 뒤에 있는 값에 대하여
 	// 새로운 노드가 next가 되도록
-	rear->setNext(newNode);
+	// rear->setNext(newNode);
 
 	// 결국 맨 뒤의 값은
 	// 새로 만들어진 값으로 할당
-	rear = newNode;
+	// rear = newNode;
 
 	// gpt 코드
 	// Node* newNode = new Node(data);
@@ -58,17 +64,24 @@ Node* LinkedQueue::dequeue()
 		return nullptr;
 	}
 
+	Node* removedNode = front;
+	front = removedNode->getNext();
+	removedNode -> setNext(nullptr);
+	if(front==nullptr) rear = nullptr;
+
+	return removedNode;
+
 	// 삭제된 값을 반환해줘야되므로
 	// 변수 하나 초기화
-	Node* removedItem = front->getNext();
+	// Node* removedItem = front->getNext();
 
 	// front는 한 칸 앞으로 밀어줘야됨
 	// 그래서 front의 next는 현재 삭제되는 값으로 되어있음
 	// 이 부분을 삭제되는 값 다음 값으로
 	// 할당해줘야 됨.
-	front->setNext(removedItem->getNext());
+	// front->setNext(removedItem->getNext());
 
-	return removedItem;
+	// return removedItem;
 
 	// gpt 코드
 	// Node* target = front;
@@ -113,17 +126,25 @@ void LinkedQueue::display()
 		exit(1);
 	}
 
-	Node* current = front->getNext();
-
-	// rear 값의 다음은
-	// nullptr 이므로
-	// 이를 활용
-	while (current->getNext() != nullptr)
+	Node* current = front;
+	while(current != nullptr) 
 	{
 		cout << current->getData() << "  ";
 		current = current->getNext();
 	}
 	cout << endl;
+
+	// Node* current = front->getNext();
+
+	// rear 값의 다음은
+	// nullptr 이므로
+	// 이를 활용
+	// while (current->getNext() != nullptr)
+	// {
+	// 	cout << current->getData() << "  ";
+	// 	current = current->getNext();
+	// }
+	// cout << endl;
 
 	// gpt 코드
 	// Node* current = front;

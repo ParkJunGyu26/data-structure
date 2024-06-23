@@ -16,7 +16,8 @@ Node* CircularList::getHead()
 {
 	if (isEmpty())
 		return nullptr;
-	return tail->getNext();
+	return getTail()->getNext();
+	// return tail->getNext();
 }
 
 // 여기에서 tail은 첫 번째 노드를 가리키기 직전을 가리킨다.
@@ -35,8 +36,9 @@ void CircularList::setTail(Node* n)
 // 리스트가 비었는지 체크
 bool CircularList::isEmpty() 
 {
-	return tail == nullptr;
-	// return listsize == 0;
+	return getTail() == nullptr;
+	// return tail == nullptr; -> 이건 안될듯
+	// return listsize == 0; -> 이거 괜찮 또는 size() == 0;
 }
 
 // 크기 반환
@@ -51,17 +53,22 @@ int CircularList::getEntry(int pos)
 	if (isEmpty() || pos < 0 || pos > listsize)
 	{
 		cout << "ERROR" << endl;
-		return -1;
+		exit(1);
+		// return -1; -> 이거는 이제 감점
 	}
 
 	Node* current = getHead();
-	int count = 0;
-
-	while (count != pos)
-	{
-		++count;
+	for (int i = 0; i < pos; i++)
 		current = current->getNext();
-	}
+	
+	return current->getData();
+	// int count = 0;
+
+	// while (count != pos)
+	// {
+	// 	++count;
+	// 	current = current->getNext();
+	// }
 
 	return current->getData();
 }
@@ -76,6 +83,14 @@ int CircularList::getEntry(int pos)
 // 이 부분에 대해서도 처리해줘야 됨.
 void CircularList::insert(int pos, const int data) 
 {
+	// 헤드에 추가할 때
+	// 처음 넣을 때와
+	// 기존에 있는 노드를 넣을 때로 구분하고
+	// 그 외는 똑같이 처리하고
+	// 만약 pos이 마지막 값.
+	// 즉, 길이만큼을 뜻하는 tail을 가리킬 때
+	// tail을 업데이트
+
 	// 적절하지 않은 범위 예외처리
 	if (pos < 0 || pos > size())
 	{
@@ -84,25 +99,37 @@ void CircularList::insert(int pos, const int data)
 	}
 
 	Node* newNode = new Node(data);
-	Node* current = getHead();
 
-	// 헤드에 추가하는 경우
-	if (pos == 0)
-	{
-
+	if (isEmpty()) {
+		setTail(newNode);
+		getTail() -> setNext(getTail());
+	} else if (pos == 0) {
+		newNode -> setNext(getHead());
+		getTail() -> setNext(newNode);
+	} else {
+		Node* current = getHead();
+		for (int i = 0; i < pos-1; i++)
+			current = current -> getNext();
+		newNode->setNext(current->getNext());
+		current->setNext(newNode);
+		if (current == getTail())
+			setTail(newNode);
 	}
+
+	++listsize;
+
 	// 추가하려는 위치 직전의 노드 주소값 탐색(순차)
-	for (int i = 0; i <= pos-1; i++)
-		current = current->getNext();
+	// for (int i = 0; i <= pos-1; i++)
+	// 	current = current->getNext();
 
 	// 새로운 노드는 직전 노드가 가리키고 있던 노드를 가리키도록 초기화
-	newNode->setNext(current->getNext());
+	// newNode->setNext(current->getNext());
 
 	// 직전 노드가 가리키던 노드를 새로운 노드를 가리키도록 초기화
-	current->setNext(newNode);
+	// current->setNext(newNode);
 
 	// 노드가 추가되었으니 사이즈는 1 증가
-	listsize++;
+	// listsize++;
 
 	// gpt 코드
 
